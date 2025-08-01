@@ -1,0 +1,489 @@
+<!-- The originial version of this template was made by Johnathan Soma and then messed with and customized by Aaron Reiss and Carrie Arnold -->
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <script src="https://api.mapbox.com/mapbox-gl-js/v2.15.0/mapbox-gl.js"></script>
+    <link href="https://api.mapbox.com/mapbox-gl-js/v2.15.0/mapbox-gl.css" rel="stylesheet" />
+    <style>
+      h1{
+        font-family: sans-serif;
+        max-width: 50%;
+        margin: 4rem auto 2rem auto;
+        font-weight: bold;
+        line-height: 1.1;
+        font-size: 3em;
+        }
+      
+      h2{
+        font-family: sans-serif;
+        max-width: 50%;
+        margin: 4rem auto 2rem auto;
+        font-weight: bold;
+        line-height: 1.1;
+        font-size: 2em;
+        font-style: italic;
+        padding-bottom: 1.4em;
+        }
+    
+      p{
+        max-width: 50%;
+        font-family: sans-serif;
+        margin: 0 auto 2rem auto;
+        font-size: 19px;
+      }
+      
+      iframe {
+            padding-bottom: 1.4em;
+            padding-top: 1.2em;
+            background: #ffffff;
+        }
+     
+      figure {
+        margin: 0 auto 1.2em auto; /* centers the whole figure block */
+        text-align: center;        /* centers the image and caption */
+        }
+
+      figure img {
+        display: block;
+        margin: 0 auto;            /* centers the image itself */
+        max-width: 100%;           /* responsive sizing */
+        height: auto;
+        padding-bottom: 1em;
+        }
+
+    figcaption {
+        font-size: 0.9rem;
+        font-family: sans-serif;
+        font-style: italic;
+        color: #555;
+        margin-top: 0.5em;
+        padding-bottom: 1em;
+        }
+
+      #scrolly {
+        position: relative;
+        padding: 1rem;
+      }
+
+      .scrolly-overlay {
+        position: relative;
+        padding: 0;
+        max-width: 35rem;
+        margin-left: 2px;
+        margin-right: auto;
+      }
+
+      .sticky-thing {
+        position: -webkit-sticky;
+        position: sticky;
+        left: 0;
+        width: 100%;
+        margin: 0;
+        z-index: 0;
+        top: 0;
+        height: 100vh;
+        /* Center everything inside */
+        display: flex;
+        justify-content: center;
+        flex-direction: column;
+        justify-content: center;
+      }
+
+      #photoScrollySection .step {
+        padding: 2rem;
+        background: rgba(255, 255, 255, 0.8);
+        max-width: 40rem;
+        margin: auto;
+        }
+
+      .step {
+        margin: 0 auto 2rem auto;
+        margin-bottom: 25rem;
+        background-color: #eee;
+        background-color: #fff;
+        color: black;
+        text-align: center;
+        width: 90%;
+        max-width: none;
+      }
+
+      .step p {
+        padding: 1rem;
+        font-size: 1.25rem;
+        line-height: 1.5;
+        max-width: none;
+      }
+
+      .photoDiv {
+        width: 49%;
+        margin-right: 0px;
+        margin-left: auto;
+        display: block;
+      }
+      
+      #map {
+      position: fixed;
+      top: 0;
+      bottom: 0;
+      width: 100%;
+      z-index: 0;
+    }
+   #scrollMapSection .floating-text {
+        position: fixed;
+        top: 5%;
+        left: 5%;
+        width: 35%;
+        background: rgba(255, 255, 255, 0.8);
+        padding: 1em;
+        border-radius: 1em;
+        z-index: 10;
+        }
+    .floating-text {
+        display: none;
+        }
+    #photoScrolly .floating-text {
+      display: none;
+      }
+      #scrollMapSection .floating-text-box {
+        position: fixed;
+        top: 10%;
+        right: 5%;
+        width: 28%;
+        background: rgba(255, 255, 255, 0.9);
+        padding: 1.5rem;
+        border-radius: 10px;
+        z-index: 10;
+        }
+
+#scrollMapSection .step {
+        margin-bottom: 3rem;
+        }
+
+    .content {
+      position: relative;
+      z-index: 1;
+      margin-top: 100vh;
+      width: 60%;
+      margin-left: auto;
+      margin-right: auto;
+    }
+    section {
+      height: 100vh;
+      padding: 2rem;
+    }
+    #pause {
+      background: #f0f0f0;
+    }
+      .hidden { visibility: hidden; }
+
+      /* When it's less than 700 pixels wide, do normal scrollytelling */
+      @media only screen and (min-width: 700px) {
+        #scrolly.side-by-side {
+            display: flex;
+            gap: 2rem; /* optional spacing between columns */
+        }
+
+        #scrolly.side-by-side .scrolly-overlay {
+            order: 0;
+            width: 75%;           /* Explicit width */
+            max-width: none;      /* Remove limiting constraint */
+            flex-grow: 0;
+            flex-shrink: 0;
+            background-color: rgba(255, 0, 0, 0.1); /* debugging */
+        }
+
+        #scrolly.side-by-side .sticky-thing {
+            order: 1;
+            width: 50%;           /* Adjust to make layout add to 100% */
+            flex-grow: 0;
+            flex-shrink: 0;
+        }
+}
+
+    </style>
+	<script src="https://unpkg.com/intersection-observer@0.5.1/intersection-observer.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/scrollama/3.0.4/scrollama.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.3.0/d3.min.js"></script>
+	
+  </head>
+
+  <body>
+	<h1>Rural dialysis clinic closures</h1>
+    <h2>Carrie Arnold</h2>
+  <p>The COVID-19 pandemic triggered an avalanche of changes in the US healthcare system, accelerating changes that have been underway for years. The stressors have been especially strong in rural America, which is currently plagued by an exodus of healthcare facilities. For the more than 500,000 Americans who rely on dialysis to stay alive after their kidneys have failed, this shortage is especially concerning. From 2021 to 2023, <a href="https://journals.lww.com/cjasn/citation/2024/06000/closure_of_dialysis_clinics_in_the_united_states.13.aspx">over 200 dialysis centers across the United States</a> have shut their doors.</p>
+
+  <p>The situation is especially acute in rural parts of the West.</p>
+  <figure><img src="western_closed_clinic2.png"><figcaption>Official data from the Centers for Medicare and Medicaid Services, which regulates dialysis facilities, has identified more than 100 clinics west of the Mississippi that have ceased operations since 2020. </figcaption> </figure>
+  <p>As of January 2025, nearly half of all U.S. counties lack a dialysis clinic. </p>
+ 
+
+  <p>This is one story of a shuttered clinic.</p>
+
+  <section id="photoScrollySection">
+    <div id="scrolly">
+      <div class="sticky-thing">
+<!-- Sticky Thing 1 goes below this line -->
+
+<img id="scrollyPhoto" class="photoDiv" src="tillamook_clinic_open copy-01.svg">
+
+<!-- Sticky Thing 1 goes above this line -->
+      
+        </div>
+
+        <div class="scrolly-overlay">
+          <div class="step" id="step1">
+            <p>A PLACE TO CALL HOME<br><br>Each week, 12 individuals spend nearly half their waking hours hooked up to life support machines in Tillamook, Oregon. A small town of just over 5000 in the northwest corner of the state, the town is best known as the eponymous headquarters of the <a href="http://www.tillamook.com"> Tillamook Creamery</a>. Tillamook's small clinic treats an almost infinitesimal proportion of the more than half a million Americans whose kidneys have failed and require dialysis three times each week to stay alive. But for the handful of patients treated at the US Renal-run clinic, the tiny facility is a lifeline.
+            </p><p>The clinic servies a wide geographic area- any of the areas in blue are within an hour's drive of Tillamook, with darker colors representing longer drives. The only other clinics are in Astoria or Lincoln City.</p>
+          </div>
+          <div class="step" id="step2">
+            <p>A CLOSURE WITHOUT CLOSURE<br><br>On January 23, 2024, patients checked in for what they thought would be just another four-hour session. Instead, they were told that in one month, the clinic would cease operations. In a <a href="https://www.tillamookheadlightherald.com/news/dialysis-center-closure-leaves-patients-scrambling/article_878b60c8-c207-11ee-957b-6b50e4e99c90.html">statement to local newspapers</a>, the company said "Providing care in communities like Tillamook is a challenge many health care providers face as Medicare reimbursement has not kept up with the rising costs of operating a dialysis center."</p>
+            <p>Retired dialysis social worker Maggie Alberton said, "When it comes to a point that the for profit agency decides that it is no longer as profitable, how can they morally and ethically deny the need?  From what I know about folks with chronic illnesses, when they have such an insult to their support, they usually turn their anger inward and die.  For dialysis patients, it would be easy to just skip 3 treatments and face the the agony that their dying process may give them.  Some may ask for hospice, but I will bet that folks betrayed by a for profit organization that has gleaned wonderful profits from their unfortunate situation, would just die."</p>
+          </div>
+          <div class="step" id="step3">
+            <p>STEP THREE<br><br>You can add as many steps as you want. You could even add an image inside a scrolly step — just look at Etai, below:</p>
+            <img src="etai.jpg" style="margin: 0 auto">
+          </div>
+        </div>
+      </div>
+      </section>
+
+      <p></p>
+      <p></p>
+      <!-- <p>Then maybe I have a block of text talking about something or another and then I want to direct you to another map, or a different zoom level, or an image that I want to annotate — whatever. I can create another photoDiv below. In fact, I can add as many as I want.</p>
+
+      <p>This concept works best if you have a simple base map with a story that progresses with prose on the left and changing annotations on that base map on the right. and it requires that when you export images from Adobe Illustrator you ALWAYS USE THE ARTBOARD when saving and keep all save settings the same (size, image type, etc).</p> -->
+      <p></p>
+      <p></p>
+
+    <script>
+
+      
+    /* Scrollytelling code goes under here */
+
+      // Code for the Photo Div #1 (aka #scrollyPhoto1)
+        
+       // Step One: Set back to the original image
+        d3.select("#step1").on('stepin', function(e) {
+        d3.select("#scrollyPhoto").attr("src", "tillamook_clinic_open copy-01.svg");
+        });
+
+        // Entering Step Two
+        d3.select("#step2").on('stepin',function(e) {
+        console.log("We've arrived at STEP TWO in the photo div")
+        d3.select("#scrollyPhoto").attr("src", "tillamook_clinic_open copy-01.svg");
+      })
+
+       // Entering Step Three
+       d3.select("#step3").on('stepin',function(e) {
+        console.log("We've arrived at STEP Three in the photo div")
+        d3.select("#scrollyPhoto").attr("src", "oregon_clinic_object_ai.svg");
+      })
+
+    </script>
+
+<script>
+    const scroller = scrollama();
+
+	scroller
+		.setup({
+			step: "#scrolly .scrolly-overlay .step",
+			offset: 0.5,
+			debug: false
+		})
+		.onStepEnter(function({ element, index, direction}) {
+			const event = new CustomEvent('stepin', { detail: { direction: direction } })
+			element.dispatchEvent(event);
+		})
+		.onStepExit(function({ element, index, direction }) {
+			const event = new CustomEvent('stepout', { detail: { direction: direction } })
+			element.dispatchEvent(event);
+		});
+
+	window.addEventListener("resize", scroller.resize);
+    </script>
+
+
+    <!-- ai2html resizer script -->
+
+<script type="text/javascript">
+  (function() {
+      // only want one resizer on the page
+      if (document.documentElement.className.indexOf("g-resizer-v3-init") > -1) return;
+      document.documentElement.className += " g-resizer-v3-init";
+      // require IE9+
+      if (!("querySelector" in document)) return;
+      function resizer() {
+          var elements = Array.prototype.slice.call(document.querySelectorAll(".g-artboard[data-min-width]")),
+              widthById = {};
+          elements.forEach(function(el) {
+              var parent = el.parentNode,
+                  width = widthById[parent.id] || parent.getBoundingClientRect().width,
+                  minwidth = el.getAttribute("data-min-width"),
+                  maxwidth = el.getAttribute("data-max-width");
+              widthById[parent.id] = width;
+
+              if (+minwidth <= width && (+maxwidth >= width || maxwidth === null)) {
+                  el.style.display = "block";
+              } else {
+                  el.style.display = "none";
+              }
+          });
+          try {
+              if (window.parent && window.parent.$) {
+                  window.parent.$("body").trigger("resizedcontent", [window]);
+              }
+              if (window.require) {
+                  require(['foundation/main'], function() {
+                      require(['shared/interactive/instances/app-communicator'], function(AppCommunicator) {
+                          AppCommunicator.triggerResize();
+                      });
+                  });
+              }
+          } catch(e) { console.log(e); }
+      }
+
+      document.addEventListener('DOMContentLoaded', resizer);
+      // feel free to replace throttle with _.throttle, if available
+      window.addEventListener('resize', throttle(resizer, 200));        
+
+      function throttle(func, wait) {
+          // from underscore.js
+          var _now = Date.now || function() { return new Date().getTime(); },
+              context, args, result, timeout = null, previous = 0;
+          var later = function() {
+              previous = _now();
+              timeout = null;
+              result = func.apply(context, args);
+              if (!timeout) context = args = null;
+          };
+          return function() {
+              var now = _now(), remaining = wait - (now - previous);
+              context = this;
+              args = arguments;
+              if (remaining <= 0 || remaining > wait) {
+                  if (timeout) {
+                      clearTimeout(timeout);
+                      timeout = null;
+                  }
+                  previous = now;
+                  result = func.apply(context, args);
+                  if (!timeout) context = args = null;
+              } else if (!timeout && options.trailing !== false) {
+                  timeout = setTimeout(later, remaining);
+              }
+              return result;
+          };
+      }
+
+     
+  })();
+</script>
+<div style="height: 100vh;"></div>
+<div style="height: 100vh;"></div>
+<section id="scrollMapSection" style="position: relative; height: 400vh;">
+  <div id="map" style="position: sticky; top: 0; height: 100vh;"></div>
+<div class="floating-text-box" id="floatingText">
+  <h2>Dialysis Journey</h2>
+  <p>Scroll down to see patients traveling to treatment.</p>
+</div>
+
+<div class="content">
+  <section id="outbound">
+    <h3>Outbound Trip</h3>
+    <p>Patients leave Tillamook and head to clinics in Astoria and Lincoln City.</p>
+  </section>
+  <section id="return">
+    <h3>Return Trip</h3>
+    <p>Now they drive back to Tillamook, often tired from treatment.</p>
+  </section>
+</section> </div>
+
+<script>
+  mapboxgl.accessToken = 'pk.eyJ1IjoiY2Fycmllcm9iaW4iLCJhIjoiY21jM2ltdTlyMDU1NTJrb2ZnMnFiazRqeiJ9.RT-SWZnQIo_Z7zSOdRh_vg'; 
+  const map = new mapboxgl.Map({
+    container: 'map',
+    style: 'mapbox://styles/mapbox/streets-v12',
+    center: [-123.0, 45.6],
+    zoom: 8.3,
+    scrollZoom: false,
+    dragPan: false
+  });
+
+  // Lock map interactions
+  map.scrollZoom.disable();
+  map.boxZoom.disable();
+  map.dragPan.disable();
+  map.dragRotate.disable();
+  map.keyboard.disable();
+  map.doubleClickZoom.disable();
+  map.touchZoomRotate.disable();
+
+  // Approximate coordinates
+  const tillamook = [-123.84668, 45.4561];
+  const lincolnCityRoute = [
+    tillamook,
+    [-123.8, 45.3],
+    [-123.75, 45.15],
+    [-123.95, 44.96] // Lincoln City
+  ];
+  const astoriaRoute = [
+    tillamook,
+    [-123.85, 45.6],
+    [-123.9, 45.75],
+    [-123.83, 46.19] // Astoria
+  ];
+
+  // Add animated markers
+  const markerLincoln = new mapboxgl.Marker({ color: 'orange' }).setLngLat(tillamook).addTo(map);
+  const markerAstoria = new mapboxgl.Marker({ color: 'blue' }).setLngLat(tillamook).addTo(map);
+
+  function interpolate(coords, progress) {
+    if (progress <= 0) return coords[0];
+    if (progress >= 1) return coords[coords.length - 1];
+    const i = Math.floor(progress * (coords.length - 1));
+    const t = (progress * (coords.length - 1)) - i;
+    const [aLng, aLat] = coords[i];
+    const [bLng, bLat] = coords[i + 1];
+    return [aLng + (bLng - aLng) * t, aLat + (bLat - aLat) * t];
+  }
+
+  const scrollStart = window.innerHeight * 0.5;
+  const outboundLength = window.innerHeight * 2;
+  const pauseLength = window.innerHeight * 1.5;
+  const returnLength = window.innerHeight * 2;
+
+  window.addEventListener('scroll', () => {
+    const scrollY = window.scrollY;
+    const progressOut = Math.min(Math.max((scrollY - scrollStart) / outboundLength, 0), 1);
+    const progressBack = Math.min(Math.max((scrollY - (scrollStart + outboundLength + pauseLength)) / returnLength, 0), 1);
+
+    if (scrollY < scrollStart) {
+      markerLincoln.setLngLat(tillamook);
+      markerAstoria.setLngLat(tillamook);
+      document.getElementById('floatingText').innerHTML = `<h2>Dialysis Journey</h2><p>Scroll down to see patients traveling to treatment.</p>`;
+    }
+    else if (scrollY < scrollStart + outboundLength) {
+      markerLincoln.setLngLat(interpolate(lincolnCityRoute, progressOut));
+      markerAstoria.setLngLat(interpolate(astoriaRoute, progressOut));
+      document.getElementById('floatingText').innerHTML = `<h2>Outbound</h2><p>Patients are heading to dialysis clinics. ${(progressOut*100).toFixed(0)}% complete.</p>`;
+    }
+    else if (scrollY < scrollStart + outboundLength + pauseLength) {
+      markerLincoln.setLngLat(lincolnCityRoute[lincolnCityRoute.length - 1]);
+      markerAstoria.setLngLat(astoriaRoute[astoriaRoute.length - 1]);
+      document.getElementById('floatingText').innerHTML = `<h2>Treatment</h2><p>Patients are receiving dialysis. Scroll down to see their return.</p>`;
+    }
+    else if (scrollY < scrollStart + outboundLength + pauseLength + returnLength) {
+      markerLincoln.setLngLat(interpolate(lincolnCityRoute.slice().reverse(), progressBack));
+      markerAstoria.setLngLat(interpolate(astoriaRoute.slice().reverse(), progressBack));
+      document.getElementById('floatingText').innerHTML = `<h2>Return Trip</h2><p>Heading back to Tillamook. ${(progressBack*100).toFixed(0)}% complete.</p>`;
+    } else {
+      markerLincoln.setLngLat(tillamook);
+      markerAstoria.setLngLat(tillamook);
+      document.getElementById('floatingText').innerHTML = `<h2>Home</h2><p>The long round-trip journey is complete.</p>`;
+    }
+  });
+</script>
+  </body>
+</html>
