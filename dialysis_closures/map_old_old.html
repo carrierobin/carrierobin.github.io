@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Dialysis Journey Map</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link href="https://api.mapbox.com/mapbox-gl-js/v2.15.0/mapbox-gl.css" rel="stylesheet" />
+    <style>
+      body { margin: 0; font-family: sans-serif; }
+      nav { text-align: center; padding: 1em; background: #f8f8f8; }
+      nav a { margin: 0 1em; text-decoration: none; }
+      #map { position: fixed; top: 0; bottom: 0; width: 100%; }
+      .floating-text-box {
+        position: fixed;
+        top: 10%;
+        right: 5%;
+        width: 30%;
+        background: rgba(255,255,255,0.9);
+        padding: 1.5rem;
+        border-radius: 10px;
+        z-index: 10;
+      }
+      .content {
+        position: relative;
+        z-index: 1;
+        margin-top: 100vh;
+        padding: 2rem;
+        width: 60%;
+        margin-left: auto;
+        margin-right: auto;
+      }
+    </style>
+  </head>
+  <body>
+    <nav>
+      <a href="index.html">Intro</a> |
+      <a href="scrollytelling.html">Interactive Story</a> |
+      <a href="map.html">Map</a>
+    </nav>
+
+    <div id="map"></div>
+    <div class="floating-text-box" id="floatingText">
+      <h2>Dialysis Journey</h2>
+      <p>Scroll down to see patients traveling to treatment.</p>
+    </div>
+
+    <div class="content">
+      <section><h3>Outbound Trip</h3><p>Patients leave Tillamook...</p></section>
+      <section><h3>Treatment Pause</h3><p>Dialysis sessions take time...</p></section>
+      <section><h3>Return Trip</h3><p>Patients return to Tillamook...</p></section>
+    </div>
+
+    <script type="module" src="/main.js"></script>
+  </body>
+</html>

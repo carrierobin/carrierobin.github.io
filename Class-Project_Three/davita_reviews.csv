@@ -1,0 +1,2 @@
+error,code,type,line,index,errors
+Invalid input provided,validation_error,validation,"{""url"":""https://www.glassdoor.com/Overview/Working-at-DaVita-EI_IE1432.11,17.htm""}",1,"[['days', 'Required field']]"

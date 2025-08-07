@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Dialysis Story - Scrollytelling</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/scrollama/3.0.4/scrollama.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.3.0/d3.min.js"></script>
+  <style>
+    body { margin: 0; font-family: Georgia, 'Times New Roman', Times, serif;; }
+    nav { text-align: center; padding: 1em; background: #f8f8f8; }
+    nav a { margin: 0 1em; text-decoration: none; }
+    #scrolly { display: flex; padding: 2rem; }
+    .sticky-thing { position: sticky; top: 0; height: 100vh; width: 50%; display: flex; align-items: center; justify-content: center; }
+    .photoDiv { width: 100%; }
+    .scrolly-overlay { width: 50%; padding-left: 2rem; }
+    .step { margin-bottom: 25vh; font-size: 1.2rem; background: white; padding: 1rem; }
+  </style>
+</head>
+<body>
+  <nav>
+    <a href="index.html">Intro</a> |
+    <a href="scrollytelling.html">Interactive Story</a> |
+    <a href="map.html">Map</a>
+  </nav>
+
+  <div id="scrolly">
+    <div class="sticky-thing">
+      <img id="scrollyPhoto" class="photoDiv" src="tillamook_clinic_open copy-01.svg" alt="Clinic image">
+    </div>
+    <div class="scrolly-overlay">
+          <div class="step" id="step1">
+            <p>A PLACE TO CALL HOME<br><br>Each week, 12 individuals spend nearly half their waking hours hooked up to life support machines in Tillamook, Oregon. A small town of just over 5000 in the northwest corner of the state, the town is best known as the eponymous headquarters of the <a href="http://www.tillamook.com"> Tillamook Creamery</a>. Tillamook's small clinic treats an almost infinitesimal proportion of the more than half a million Americans whose kidneys have failed and require dialysis three times each week to stay alive. But for the handful of patients treated at the US Renal-run clinic, the tiny facility is a lifeline.
+            </p><p>The clinic servies a wide geographic area- any of the areas in blue are within an hour's drive of Tillamook, with darker colors representing longer drives. The only other clinics are in Astoria or Lincoln City.</p>
+          </div>
+          <div class="step" id="step2">
+            <p>A CLOSURE WITHOUT CLOSURE<br><br>On January 23, 2024, patients checked in for what they thought would be just another four-hour session. Instead, they were told that in one month, the clinic would cease operations. In a <a href="https://www.tillamookheadlightherald.com/news/dialysis-center-closure-leaves-patients-scrambling/article_878b60c8-c207-11ee-957b-6b50e4e99c90.html">statement to local newspapers</a>, the company said "Providing care in communities like Tillamook is a challenge many health care providers face as Medicare reimbursement has not kept up with the rising costs of operating a dialysis center."</p>
+            <p>Retired dialysis social worker Maggie Alberton said, "When it comes to a point that the for profit agency decides that it is no longer as profitable, how can they morally and ethically deny the need?  From what I know about folks with chronic illnesses, when they have such an insult to their support, they usually turn their anger inward and die.  For dialysis patients, it would be easy to just skip 3 treatments and face the the agony that their dying process may give them.  Some may ask for hospice, but I will bet that folks betrayed by a for profit organization that has gleaned wonderful profits from their unfortunate situation, would just die."</p>
+          </div>
+          <div class="step" id="step3">
+            <p>STATEWIDE GAP<br><br>Tillamook is far from the only place in Oregon without a nearby dialysis clinic. Much of the state lives more than a 30 minute drive away from the nearest clinic.</p>
+            <p>For Oregonians living outside the pink areas, staying alive requires a multi-hour commute several times each week.</p>
+            
+          </div>
+        </div>
+      </div>
+      </section>
+  </div>
+
+  <script>
+    d3.select("#step1").on("stepin", () => d3.select("#scrollyPhoto").attr("src", "tillamook_clinic_open copy-01.svg"));
+    d3.select("#step2").on("stepin", () => d3.select("#scrollyPhoto").attr("src", "tillamook_clinic_open copy-01.svg"));
+    d3.select("#step3").on("stepin", () => d3.select("#scrollyPhoto").attr("src", "oregon_clinic_object_ai.svg"));
+
+    const scroller = scrollama();
+    scroller
+      .setup({ step: ".step", offset: 0.5 })
+      .onStepEnter(({ element }) => element.dispatchEvent(new CustomEvent('stepin')));
+  </script>
+  <nav>
+    <a href="index.html">Intro</a> |
+    <a href="scrollytelling.html">Interactive Story</a> |
+    <a href="map.html">Map</a>
+  </nav>
+</body>
+</html>
