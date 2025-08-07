@@ -1,13 +1,101 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Vite App</title>
-  </head>
-  <body>
-    <div id="app"></div>
-    <script type="module" src="/src/main.js"></script>
-  </body>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Dialysis Clinic Closures</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      line-height: 1.6;
+      background: #f8f9fa;
+      color: #333;
+    }
+
+    header {
+      background: #003366;
+      color: white;
+      padding: 2rem 1rem;
+      text-align: center;
+    }
+
+    nav {
+      background: #eaeaea;
+      padding: 1rem;
+      text-align: center;
+    }
+
+    nav a {
+      margin: 0 1rem;
+      text-decoration: none;
+      color: #003366;
+      font-weight: bold;
+    }
+
+    .container {
+      max-width: 900px;
+      margin: 2rem auto;
+      padding: 0 1rem;
+      background: white;
+      border-radius: 8px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.05);
+    }
+
+    h1, h2 {
+      color: #003366;
+    }
+
+    footer {
+      margin-top: 4rem;
+      padding: 2rem;
+      text-align: center;
+      background: #f1f1f1;
+      font-size: 0.9em;
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <h1>Dialysis Clinic Closures in the Rural West</h1>
+    <p>Mapping the burden of care in shrinking healthcare landscapes</p>
+  </header>
+
+  <nav>
+    <a href="index.html">Home</a>
+    <a href="scrollytelling.html">Scrollytelling Map</a>
+    <a href="map.html">Interactive Map</a>
+  </nav>
+
+  <div class="container">
+    <h2>About the Project</h2>
+    <p>The COVID-19 pandemic triggered an avalanche of changes in the US healthcare system, accelerating changes that have been underway for years. The stressors have been especially strong in rural America, which is currently plagued by an exodus of healthcare facilities. For the more than 500,000 Americans who rely on dialysis to stay alive after their kidneys have failed, this shortage is especially concerning. From 2021 to 2023, <a href="https://journals.lww.com/cjasn/citation/2024/06000/closure_of_dialysis_clinics_in_the_united_states.13.aspx">over 200 dialysis centers across the United States</a> have shut their doors.</p>
+    <p>This project explores the impact of those closures on rural residents, drawing on data from the Centers for Medicare and Medicaid Services, mapping tools, and personal narratives.</p>
+    <p></p>
+    
+  <p>The situation is especially acute in rural parts of the West.</p>
+  <p>The 2024 paper quantified the loss of dialysis clinics--the first contraction since the US began covering dialysis therapy in 1972 for nearly all citizens with kidney failure--but they didn't analyze where the clinics had closed and who this impacted.</p>
+  <figure><img src="western_closed_clinic2.png"><figcaption>Official data from the Centers for Medicare and Medicaid Services, which regulates dialysis facilities, has identified more than 100 clinics west of the Mississippi that have ceased operations since 2020. </figcaption> </figure>
+  <p>I identified clinics that were present in the 2020 dataset but not in the 2025 dataset. Each clinic is assigned a code by the government for tracking, but it can also be reassigned even if the clinic stays open. Instead, I compared latitude and longitude of each clinic to identify ones that had closed for a total of 300+ clinic closures from 2020 to 2025, consistent with the official study.The question was where were these clinics? And were they under performing?</p>
+  <p>The US Department of Agriculture ranks each county on a 1-9 scale from most urban (1) to most rural (9). I added the USDA county code to each dialysis clinic and compared the rurality of closed clinics with those that remained open. No significant difference!</p>
+  <p>I also compared clinic quality measures (the official Five Star Ranking from CMS) in closed clinics and also found no significant differences.</p>
+  <p>I calcuated the population density of each county to map how clinics were distributed by population across the country. Surprisingly, some rural areas had more dialysis capacity per 100,000 individuals that large urban areas like New York, Los Angeles, and Houston. However, large swaths of the country have no capacity at all.</p>
+  <p>Government officials and medical associations have made great efforts to map health-related factors such as food deserts, pharmacy deserts, primary care deserts, and even broadband Internet deserts. However, no official definition of dialysis desert exists. Since using CenterLine data for the entire country would be too much for my laptop, I decided to map clinics by county, and define as a dialysis desert as a county without a clinic.</p>
+  <p>As of January 2025, nearly half of all U.S. counties are dialysis deserts. </p>
+  <figure><img src="FINAL_clinic_pop_clipped.svg"><figcaption>Dialysis clinics per capita across the U.S. Gray counties contain no clinics. Darker colors indicate greater dialysis capacity by population. </figcaption> </figure>
+  <p>Here's a story of one shuttered clinic.</p>
+
+    <h2>Explore the Story</h2>
+    <ul>
+      <li><strong><a href="scrollytelling.html">Interactive Story Map</a></strong>: Scroll-driven journey of a dialysis patient from Tillamook, Oregon.</li>
+      <li><strong><a href="map.html">Clinic Closure Map</a></strong>: Explore closures, drive times, and demographics.</li>
+    </ul>
+  </div>
+
+  <footer>
+    &copy; 2025 Carrie Arnold | Data sources: CMS, Mapbox, U.S. Census Bureau, USDA
+  </footer>
+
+</body>
 </html>
